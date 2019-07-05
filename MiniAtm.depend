@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1562336796 source:c:\users\naman sharma\desktop\cpp project\miniatm\main.cpp
+	<iostream>
+	<stdlib.h>
+	<string>
+	<sstream>
+	<conio.h>
+	<Windows.h>
+	<dos.h>
+	<fstream>
+	<time.h>
+	<cstring>
+	<ctime>
+
