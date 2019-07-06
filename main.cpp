@@ -67,6 +67,7 @@ class customer : public Bank
     void getdata();
     void displaydata();
     void NewCustomer();
+    void OldCustomer();
     int checkdata(char *);
     int ReadData();
     customer()
@@ -114,56 +115,7 @@ int main()
     case 1:
         {
             customer r;
-             Transaction t;
-            int acno;
-            int k=0;            // Counter
-            cout<<"Enter you accountnumber";
-            cin>>acno;
-            fstream file("customerfile.dat"); /* This is to for input purposes only :>*/
-             while(!file.eof())         // For Finding Valid User with a valid account number :>
-             {
-              if(r.accno==acno)
-              {                     // FOr Checking Customer
-                cout<<"ACCNO:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
-                Customer=r;
-                k=1;break;
-               }
-                file.read((char *)&r,sizeof(r));
-             }
-             if(k!=1)
-            {
-            cout<<"\nNo Match Found.Please Reenter the correct Account Number";
-            file.close();
-            break;
-            main();
-            }
-            else{
-            int x;cout<<"\n"<<"P I N: \n";
-            SetConsoleTextAttribute(hConsole,0);
-            cin>>x;
-            SetConsoleTextAttribute(hConsole,3);
-            if(x==Customer.pin)
-            {
-            file.close();
-            cout<<"";
-            system ("CLS");
-           DisplayBankLogo();
-           if(Customer.status==1)
-            t.choice(Customer);
-            else{
-                    Sleep(1000);
-            SetCursor(X-20,Y+=3,"Sorry You cannot Access Your Bank Account Details As Long As it is Blocked");
-            Sleep(1000);
-                }
-            }
-            else
-            {
-                cout<<"\n WRONG PIN RENETER DETIALS \n";
-                system ("CLS");
-                cout<< ""<<flush;
-                main();
-            }
-            }
+             r.OldCustomer();
         }
             break;
     case 2:
@@ -269,11 +221,13 @@ int main()
     }
     void Transaction:: Savetrans(Transaction nc)
     {
-            cout<<"\n\nSaving Transaction DONOT QUIT IN BETWEEN\n"<<nc.accountnumber;
-            ofstream file("transactionfile.dat",ios::out|ios::app);
-            file.write((char *)&nc,sizeof(nc));
-            cout<<"\nTransaction Saved Successfully check";
-            file.close();
+      SetCursor(X-20,Y+=2,"Saving Transaction DONOT QUIT IN BETWEEN");
+      ofstream file("transactionfile.dat",ios::out|ios::app);
+      file.write((char *)&nc,sizeof(nc));
+      Sleep(2000);
+      DisplayBankLogo();
+      SetCursor(X-20,Y+=3,"TRANSACTION SAVED");
+      file.close();
     }
     void Transaction::GetTransData(int accountnum,int amount,int choice)
     {
@@ -476,7 +430,7 @@ int main()
         gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
         SetCursor(X-10,Y+=1,"PASSWORD: ");
         cin>>pin;
-        SetCursor(X-10,Y+=1,"Enter Sum To Credit *MINIMUM INR 500*");
+        SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
         cin>>sum;
         accno=6000+(b.getaccounts());
         updatebankaccounts();
@@ -491,13 +445,13 @@ int main()
     }
     void customer:: displaydata()
     {
-     cout<<"WELCOME   "<<fname<<" "<<lname<<"\n";
-     cout<<"Account Number: "<<accno<<"\n";
-     cout<<"Address = "<<address<<"\n";
-     cout<<"Aadhar NO = "<<aadharcardno<<"\n";
-     cout<<"phonenumber ="<<phoneno<<"\n";
-     cout<<"Balance ="<<sum<<"\n";
-     cout<<"*****"<<pin<<"*****\n\n\n";
+      SetCursor(X-20,Y+=1,"WELCOME:-");cout<<fname<<" "<<lname;
+      SetCursor(X-20,Y+=1,"Account Number:-");cout<<accno;
+      SetCursor(X-20,Y+=1,"Address:-");cout<<address;
+      SetCursor(X-20,Y+=1,"Aadhar No.:-");cout<<aadharcardno;
+      SetCursor(X-20,Y+=1,"Phone NO.:-");cout<<phoneno;
+      SetCursor(X-20,Y+=1,"Balance:-");cout<<sum;
+      SetCursor(X-20,Y+=1,"P I N :-");cout<<"*****"<<pin<<"*****";
     }
     int customer:: checkdata(char *element)
     {
@@ -539,12 +493,12 @@ int main()
             ofstream file("customerfile.dat",ios::app);
             nc.getdata();
             file.write((char *)&nc,sizeof(nc));
-            cout<<"\nData Saved Successfully check";
+            SetCursor(X-20,Y+=2,"Data Saved Successfully check");
             nc.displaydata();
             Sleep(3000);
             DisplayBankLogo();
             t.choice(nc);
-            cout<<"\n\n\nDONOT QUIT IN BETWEEN\n\n";
+            SetCursor(X-20,Y+=2,"DONOT QUIT IN BETWEEN");
             file.close();
             }
             else // Then the things to create at first :>
@@ -552,7 +506,7 @@ int main()
               ofstream file("customerfile.dat",ios::out);
               nc.getdata();
               file.write((char *)&nc,sizeof(nc));
-               cout<<"\nData Saved Successfully\n";
+               SetCursor(X-20,Y+=2,"Data Saved Successfully check");
                nc.displaydata();
                Sleep(2000);
                system ("CLS");
@@ -563,4 +517,58 @@ int main()
                t.choice(nc);
              //  Transaction t;t.Credit();
             }
+    }
+    void customer:: OldCustomer()
+    {
+      Transaction t;
+      customer r,Customer;
+     int acno;
+     int k=0;            // Counter
+     cout<<"Enter you accountnumber";
+     cin>>acno;
+     fstream file("customerfile.dat"); /* This is to for input purposes only :>*/
+      while(!file.eof())         // For Finding Valid User with a valid account number :>
+      {
+       if(r.accno==acno)
+       {                     // FOr Checking Customer
+         cout<<"ACCNO:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
+         Customer=r;
+         k=1;break;
+        }
+         file.read((char *)&r,sizeof(r));
+      }
+      if(k!=1)
+     {
+     cout<<"\nNo Match Found.Please Reenter the correct Account Number";
+     file.close();
+     main();
+     }
+     else{
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+     int x;cout<<"\n"<<"P I N: \n";
+     SetConsoleTextAttribute(hConsole,0);
+     cin>>x;
+     SetConsoleTextAttribute(hConsole,3);
+     if(x==Customer.pin)
+     {
+     file.close();
+     cout<<"";
+     system ("CLS");
+    DisplayBankLogo();
+    if(Customer.status==1)
+     t.choice(Customer);
+     else{
+             Sleep(1000);
+     SetCursor(X-20,Y+=3,"Sorry You cannot Access Your Bank Account Details As Long As it is Blocked");
+     Sleep(1000);
+         }
+     }
+     else
+     {
+         cout<<"\n WRONG PIN RENETER DETIALS \n";
+         system ("CLS");
+         cout<< ""<<flush;
+         main();
+     }
+     }
     }
