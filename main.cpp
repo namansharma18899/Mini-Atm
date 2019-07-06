@@ -457,7 +457,7 @@ int main()
     {
      for(int i=0;i<10;i++)
      {
-         if(!(element[i]>='1' && element[i]<='9'))
+         if(!(element[i]>='0' && element[i]<='9'))
          {
              return 0;
          }
