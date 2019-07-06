@@ -221,7 +221,7 @@ int main()
     }
     void Transaction:: Savetrans(Transaction nc)
     {
-      SetCursor(X-20,Y+=2,"Saving Transaction DONOT QUIT IN BETWEEN");
+      SetCursor(X-20,Y+=2,"Saving Transaction DONOT QUIT IN BETWEEN account number is ");cout<<"\t"<<nc.accountnumber;
       ofstream file("transactionfile.dat",ios::out|ios::app);
       file.write((char *)&nc,sizeof(nc));
       Sleep(2000);
@@ -368,14 +368,15 @@ int main()
                if(T.accountnumber == (Customer.accno))
               {
                 if(T.fateofcash==2) // CREDIT
-                cout<<"Account Number :- "<<T.accountnumber<<" Has Been Credited With Amount of "<<T.Amount<<"INR  ON "<<T.timeoftransaction<<"\n";
+                cout<<"\n\nAccount Number :- "<<T.accountnumber<<" Has Been Credited With Amount of "<<T.Amount<<"INR  ON "<<T.timeoftransaction<<"\n";
                 else if(T.fateofcash==1)              // DEBIT
-                cout<<"Account Number :- "<<T.accountnumber<<" Has Been Debited With Amount of "<<T.Amount<<"INR  ON "<<T.timeoftransaction<<"\n";
+                cout<<"\n\nAccount Number :- "<<T.accountnumber<<" Has Been Debited With Amount of "<<T.Amount<<"INR  ON "<<T.timeoftransaction<<"\n";
              }
              k++;
              file.read((char *)&T,sizeof(T));
            }
         file.close();
+        Thankyou(); // Create it :>
     }
     void Transaction:: CurrentStatus(int x)
     {
@@ -411,15 +412,15 @@ int main()
         char x[20];
         Bank b;
         gets(x);
-        SetCursor(X-10,Y+=3,"AADHAR CARD NO.:");
+        SetCursor(X-10,Y+=3,"AADHAR CARD NO.:[10 DIGITS]");
         gets(aadharcardno);
         if(!(checkdata(aadharcardno)))
         {
         DisplayBankLogo();
-        SetCursor(X-20,Y+=2,"Wrong Input AAdhar No. = 10 INTEGERS");
+        SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 10 INTEGERS");
         Sleep(1000);
         SetCursor(X-20,Y+=1,"Press Enter");
-        getdata();
+        NewCustomer();
         return;
         }
         SetCursor(X-10,Y+=1,"FIRST NAME: ");
@@ -432,6 +433,15 @@ int main()
         gets(address);//cin.getline(address,sizeof(address));
         SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
         gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
+        if(!(checkdata(phoneno)))
+        {
+        DisplayBankLogo();
+        SetCursor(X-20,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
+        Sleep(1000);
+        SetCursor(X-20,Y+=1,"Press Enter");
+        NewCustomer();
+        return;
+        }
         SetCursor(X-10,Y+=1,"P I N: ");
         cin>>pin;
         SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
@@ -501,9 +511,9 @@ int main()
             nc.displaydata();
             Sleep(3000);
             DisplayBankLogo();
-            t.choice(nc);
             SetCursor(X-20,Y+=2,"DONOT QUIT IN BETWEEN");
             file.close();
+            t.choice(nc);
             }
             else // Then the things to create at first :>
             {
@@ -513,8 +523,6 @@ int main()
                SetCursor(X-20,Y+=2,"Data Saved Successfully check");
                nc.displaydata();
                Sleep(2000);
-               system ("CLS");
-               cout<< ""<<flush;
                DisplayBankLogo();
                SetCursor(X-20,Y,"DONOT QUIT IN BETWEEN");
                file.close();
