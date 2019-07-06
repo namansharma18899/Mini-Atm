@@ -500,5 +500,3 @@ int main()
              //  Transaction t;t.Credit();
             }
     }
-
-
