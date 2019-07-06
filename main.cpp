@@ -416,7 +416,11 @@ int main()
         if(!(checkdata(aadharcardno)))
         {
         DisplayBankLogo();
-        NewCustomer();
+        SetCursor(X-20,Y+=2,"Wrong Input AAdhar No. = 10 INTEGERS");
+        Sleep(1000);
+        SetCursor(X-20,Y+=1,"Press Enter");
+        getdata();
+        return;
         }
         SetCursor(X-10,Y+=1,"FIRST NAME: ");
         gets(fname);
