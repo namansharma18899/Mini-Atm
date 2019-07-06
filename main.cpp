@@ -475,9 +475,7 @@ int main()
             file.write((char *)&nc,sizeof(nc));
             cout<<"\nData Saved Successfully check";
             nc.displaydata();
-            Sleep(2000);
-            system ("CLS");
-            cout<< ""<<flush;
+            Sleep(3000);
             DisplayBankLogo();
             t.choice(nc);
             cout<<"\n\n\nDONOT QUIT IN BETWEEN\n\n";
