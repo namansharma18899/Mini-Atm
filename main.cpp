@@ -90,7 +90,7 @@ class Transaction
     void choice(customer);
     void Credit(customer);
     void MiniStatement(customer);
-    void CurrantStatus(int ); /* For Account Number */
+    void CurrantStatus(customer ); /* For Account Number */
     void PinChange(customer);
     void BlockAccount(customer);
     Transaction()
@@ -263,7 +263,7 @@ int main()
        case 3:
         MiniStatement(Customer);break;
        case 4:
-        CurrentStatus(Customer.accno);break;
+        CurrantStatus(Customer);break;
        case 5:
         PinChange(Customer);break;
        case 6:
@@ -378,7 +378,7 @@ int main()
         file.close();
         // Create it :>
     }
-    void Transaction:: CurrantStatus(int x)
+    void Transaction:: CurrantStatus(customer Customer)
     {
       Customer.displaydata();
      cout<<"\nDonot Press any key \n";
