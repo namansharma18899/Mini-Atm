@@ -428,7 +428,7 @@ int main()
         gets(address);//cin.getline(address,sizeof(address));
         SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
         gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
-        SetCursor(X-10,Y+=1,"PASSWORD: ");
+        SetCursor(X-10,Y+=1,"P I N: ");
         cin>>pin;
         SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
         cin>>sum;
