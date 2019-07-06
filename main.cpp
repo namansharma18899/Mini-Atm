@@ -57,6 +57,7 @@ class customer : public Bank
     int pin;
     int accno;
     int sum;
+    int status;
     char fname[20];
     char lname[20];
     char fathername[20];
@@ -71,6 +72,7 @@ class customer : public Bank
     customer()
     {
       sum=0;
+      status=1; // 1 stands for Active and 0 for Blocked
     }
 };
 class Transaction
@@ -122,7 +124,7 @@ int main()
              {
               if(r.accno==acno)
               {                     // FOr Checking Customer
-                 cout<<"ACCNO:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
+                cout<<"ACCNO:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
                 Customer=r;
                 k=1;break;
                }
@@ -146,7 +148,13 @@ int main()
             cout<<"";
             system ("CLS");
            DisplayBankLogo();
+           if(Customer.status==1)
             t.choice(Customer);
+            else{
+                    Sleep(1000);
+            SetCursor(X-20,Y+=3,"Sorry You cannot Access Your Bank Account Details As Long As it is Blocked");
+            Sleep(1000);
+                }
             }
             else
             {
@@ -195,11 +203,69 @@ int main()
 
     void Transaction:: PinChange(customer Customer)
     {
-    cout<<"\nON IT";
+      customer acc;int choose;
+      SetCursor(X-20,Y+=3,"Enter Your New Pin:-");
+      int x;cin>>x;
+      SetCursor(X-20,Y+=3,"Are You Sure You want to change your PIN Press 1 to 'Confrim' and 2 for 'Abort'");cout<<"";
+      cin>>choose;
+      if(choose==1)
+      {
+      Customer.pin=x;
+      fstream cfile("customerfile.dat");
+      cfile.read((char *)&acc,sizeof(acc));
+      while(!cfile.eof())         // For Finding Valid User with a valid account number :>
+       {
+        if(acc.accno==(Customer.accno))
+        {
+        cfile.seekp(cfile.tellp()-sizeof(acc));
+        cfile.write((char *)&Customer,sizeof(Customer));
+        }
+        cfile.read((char *)&acc,sizeof(acc));
+       }
+       SetCursor(X-20,Y+=2,"YOUR PIN IS CHANGED SUCCESSFULLY");
+       Sleep(2000);
+       DisplayBankLogo();
+       cfile.close();
+       choice(Customer);
+     }
+    else
+    {
+      choice(Customer);
+      return;
     }
+  }
     void Transaction:: BlockAccount(customer Customer)
     {
-    cout<<"\nON IT";
+    SetCursor(X-20,Y+=2,"Are You Sure You Want to Block Your Account");Sleep(1000);
+    SetCursor(X-30,Y+=1,"You will not be allowed to either Deposit or Withdraw Amount for atleast 1 Month Unless YOu Manually Revoke It.");Sleep(1000);
+    SetCursor(X-20,Y+=1,"Press 1 If You are Sure You want To Block this Account and 2 To Abort");Sleep(1000);
+    int x;cin>>x;
+    if(x==1)
+    {
+      Customer.status=0;
+      customer acc;
+      fstream cfile("customerfile.dat");
+      cfile.read((char *)&acc,sizeof(acc));
+      while(!cfile.eof())         // For Finding Valid User with a valid account number :>
+       {
+        if(acc.accno==(Customer.accno))
+        {
+        cfile.seekp(cfile.tellp()-sizeof(acc));
+        cfile.write((char *)&Customer,sizeof(Customer));
+        }
+        cfile.read((char *)&acc,sizeof(acc));
+       }
+       SetCursor(X-20,Y+=2,"YOUR Bank Account Has Been Blocked for 1 Month");
+       Sleep(2000);
+       DisplayBankLogo();
+       cfile.close();
+       main();
+    }
+    else
+    {
+      choice(Customer);
+      return;
+    }
     }
     void Transaction:: Savetrans(Transaction nc)
     {
@@ -268,7 +334,7 @@ int main()
             Customer.sum = amount+Customer.sum;
             SetCursor(X-20,Y+=4,"");
             cout<<Customer.sum<<" IS THE NEW AMOUNT";
-            ofstream gg("transactionfile.dat",ios::out|ios::app);
+  //        ofstream gg("transactionfile.dat",ios::out|ios::app);
             T.GetTransData(Customer.accno,amount,2);
             T.Savetrans(T);
             fstream file("customerfile.dat");
