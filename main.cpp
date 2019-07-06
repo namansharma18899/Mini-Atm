@@ -90,7 +90,7 @@ class Transaction
     void choice(customer);
     void Credit(customer);
     void MiniStatement(customer);
-    void CurrentStatus(int ); /* For Account Number */
+    void CurrantStatus(int ); /* For Account Number */
     void PinChange(customer);
     void BlockAccount(customer);
     Transaction()
@@ -248,7 +248,7 @@ int main()
       SetCursor(X-50,Y+=3,"1: WITHDRAW");
       SetCursor(X+30,Y,"2: CREDIT");
       SetCursor(X-50,Y+=3,"3: MINI STATEMENT");
-      SetCursor(X+30,Y,"4: CURRENT STATUS");
+      SetCursor(X+30,Y,"4: CURRANT STATUS");
       SetCursor(X-50,Y+=3,"5: CHANGE PIN");
       SetCursor(X+30,Y,"6: BLOCK ACCOUNT");
       SetCursor(X-20,Y+=5,"ENTER HERE: ");
@@ -376,11 +376,16 @@ int main()
              file.read((char *)&T,sizeof(T));
            }
         file.close();
-        Thankyou(); // Create it :>
+        // Create it :>
     }
-    void Transaction:: CurrentStatus(int x)
+    void Transaction:: CurrantStatus(int x)
     {
-
+      Customer.displaydata();
+     cout<<"\nDonot Press any key \n";
+     Sleep(6000);
+     DisplayBankLogo();
+     choice(Customer);
+     return;
     }
     void Bank:: updatebankaccounts()           // Called to Increment No. of Bank Accounts every time a Acc is Cretated
     {
