@@ -68,7 +68,8 @@ class customer : public Bank
     void displaydata();
     void NewCustomer();
     void OldCustomer();
-    int checkdata(char *);
+    int checkdata(char *,int);
+    int checkdata(int);
     int ReadData();
     customer()
     {
@@ -138,7 +139,7 @@ int main()
              }
            //   Bank b;
            // cout<<b.getaccounts()<<"are the number of Accounts Made , period";file.close();
-       // ifstream file("transactionfile.dat",ios::in);
+          // ifstream file("transactionfile.dat",ios::in);
         //file.read((char *)&t,sizeof(t));
     }
         break;
@@ -226,7 +227,7 @@ int main()
       file.write((char *)&nc,sizeof(nc));
       Sleep(2000);
       DisplayBankLogo();
-      SetCursor(X-20,Y+=3,"TRANSACTION SAVED");
+      SetCursor(X,Y+=6,"TRANSACTION SAVED");
       file.close();
     }
     void Transaction::GetTransData(int accountnum,int amount,int choice)
@@ -281,7 +282,7 @@ int main()
     {
             Transaction T;
             int amount;
-           SetCursor(X-20,Y+=2,"nEnter the Amount You Want To Credit Min=500 INR\n\n and Minimum 500 INR");
+           SetCursor(X-20,Y+=2,"Enter the Amount You Want To Credit and Minimum 500 INR:  ");
             cin>>amount;
             if(amount>=500)
             {
@@ -304,12 +305,12 @@ int main()
               file.read((char *)&acc,sizeof(acc));
              }
              file.close();
-             cout<<"\nData Successfully Saved\n";
+             SetCursor(X,Y+=2,"Data Successfully Saved");
             }
             else{
-                cout<<"\nMinimum Sum To Deposit is 500 INR , Please Renter ";
-                system ("CLS");
-               cout<< ""<<flush;
+              SetCursor(X-20,Y+=2,"NOTE : The Minimum Sum To Deposit is 500 INR , Please Renter ");
+              Sleep(2000);
+                DisplayBankLogo();
                 Credit(Customer);
             }
     }
@@ -317,13 +318,13 @@ int main()
     {
             Transaction T;
             int amount;
-            cout<<"\n\nEnter the Amount You Want To Debit and Minimum 500 INR";
+            SetCursor(X-20,Y+=2,"Enter the Amount You Want To Debit and Minimum 500 INR: ");
             cin>>amount;
             if(amount>=500 && Customer.sum>=amount)
             {
             Customer.sum = Customer.sum-amount;
-            cout<<Customer.sum<<" IS THE NEW AMOUNT  after debiting "<<amount<<" INT \n";
-            cout<<"\n The Account Number"<<T.accountnumber<<"has been Debited with "<<T.Amount<<" of INR on ";//<<T.timeoftransaction<<"\n";
+            SetCursor(X-20,Y+=2,"");cout<<Customer.sum;
+            SetCursor(X-20,Y+=2,"IS THE NEW AMOUNT  after debiting ");cout<<amount<<" INR ";
             T.GetTransData(Customer.accno,amount,1);
             T.Savetrans(T);
             customer acc;
@@ -339,21 +340,21 @@ int main()
               file.read((char *)&acc,sizeof(acc));
              }
              file.close();
-             cout<<"\nData Successfully Saved\n";
+             SetCursor(X,Y+=2,"Data Successfully Saved");
             }
             else if(Customer.sum<amount)
             {
-                cout<<"\nAVAILABLE BALANCE IS LESS THAN THE MONEY REQUESTED :(";
-                system ("CLS");
-                cout<< ""<<flush;
-                main();
+              SetCursor(X-20,Y+=2,"NOTE : AVAILABLE BALANCE IS LESS THAN THE MONEY REQUESTED , Pleae Reneter ");
+              Sleep(2000);
+                DisplayBankLogo();
+                Withdraw(Customer);
             }
             else
                 {
-                cout<<"\nMinimum Sum To Withdraw is 500 INR , Please Renter ";
-                system ("CLS");
-               cout<< ""<<flush;
-                Credit(Customer);
+                SetCursor(X-20,Y+=2,"NOTE : The Minimum Sum to Debit is 500 INR , Pleae Reneter ");
+                Sleep(2000);
+                DisplayBankLogo();
+                Withdraw(Customer);
             }
     }
     void Transaction::MiniStatement(customer Customer)
@@ -417,12 +418,12 @@ int main()
         char x[20];
         Bank b;
         gets(x);
-        SetCursor(X-10,Y+=3,"AADHAR CARD NO.:[10 DIGITS]");
+        SetCursor(X-10,Y+=3,"AADHAR CARD NO [12 DIGITS] : ");
         gets(aadharcardno);
-        if(!(checkdata(aadharcardno)))
+        if(!(checkdata(aadharcardno,1)))
         {
         DisplayBankLogo();
-        SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 10 INTEGERS");
+        SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 12 DIGITS");
         Sleep(1000);
         SetCursor(X-20,Y+=1,"Press Enter");
         NewCustomer();
@@ -438,17 +439,26 @@ int main()
         gets(address);//cin.getline(address,sizeof(address));
         SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
         gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
-        if(!(checkdata(phoneno)))
+        if(!(checkdata(phoneno,2)))
         {
         DisplayBankLogo();
-        SetCursor(X-20,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
+        SetCursor(X,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
         Sleep(1000);
-        SetCursor(X-20,Y+=1,"Press Enter");
+        SetCursor(X,Y+=1,"Press Enter");
         NewCustomer();
         return;
         }
-        SetCursor(X-10,Y+=1,"P I N: ");
+        SetCursor(X-10,Y+=1,"P I N [MAXIMUM 5 DIGITS] : ");
         cin>>pin;
+        if(!(checkdata(pin))) // FUNCITON OVERRIDING FOR PIN
+        {
+          DisplayBankLogo();
+          SetCursor(X,Y+=2,"Wrong Input ,P I N [MAXIMUM 5 DIGITS] :");
+          Sleep(1000);
+          SetCursor(X,Y+=1,"Press Enter");
+          NewCustomer();
+          return;
+        }
         SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
         cin>>sum;
         accno=6000+(b.getaccounts());
@@ -472,9 +482,16 @@ int main()
       SetCursor(X-20,Y+=1,"Balance:-");cout<<sum;
       SetCursor(X-20,Y+=1,"P I N :-");cout<<"*****"<<pin<<"*****";
     }
-    int customer:: checkdata(char *element)
+    int customer:: checkdata(int n)
     {
-     for(int i=0;i<10;i++)
+
+    }
+    int customer:: checkdata(char *element, int flag)
+    {
+      switch (flag)
+      {
+     case 1: // AADHAR CARD
+     for(int i=0;i<12;i++)
      {
          if(!(element[i]>='0' && element[i]<='9'))
          {
@@ -482,6 +499,18 @@ int main()
          }
      }
      return 1;
+    break;
+      case 2: // PHONE NUMBER
+        for(int i=0;i<10;i++)
+        {
+          if(!(element[i]>='0' && element[i]<='9'))
+          {
+              return 0;
+            }
+          }
+          return 1;
+        break;
+    }
     }
     int customer:: ReadData()
     {
@@ -512,7 +541,7 @@ int main()
             ofstream file("customerfile.dat",ios::app);
             nc.getdata();
             file.write((char *)&nc,sizeof(nc));
-            SetCursor(X-20,Y+=2,"Data Saved Successfully check");
+            SetCursor(X,Y+=2,"Data Saved Successfully check");
             nc.displaydata();
             Sleep(3000);
             DisplayBankLogo();
@@ -525,7 +554,7 @@ int main()
               ofstream file("customerfile.dat",ios::out);
               nc.getdata();
               file.write((char *)&nc,sizeof(nc));
-               SetCursor(X-20,Y+=2,"Data Saved Successfully check");
+               SetCursor(X,Y+=2,"Data Saved Successfully check");
                nc.displaydata();
                Sleep(2000);
                DisplayBankLogo();
