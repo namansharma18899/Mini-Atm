@@ -63,7 +63,7 @@ class customer : public Bank
     char fathername[20];
     char address[20];
     char phoneno[20];
-    char  aadharcardno[10];
+    char  aadharcardno[12];
     void getdata();
     void displaydata();
     void NewCustomer();
@@ -148,10 +148,6 @@ int main()
     }
     return 0;
 }                                                   /* End of Main */
-
-
-
-
 
 
     void Transaction:: PinChange(customer Customer)
@@ -418,17 +414,22 @@ int main()
         char x[20];
         Bank b;
         gets(x);
+        int k=1;
+        while(k==1)
+        {
         SetCursor(X-10,Y+=3,"AADHAR CARD NO [12 DIGITS] : ");
         gets(aadharcardno);
-        if(!(checkdata(aadharcardno,1)))
+        if(!(checkdata(aadharcardno,1))) // if aadhar card no is incorrect
         {
+        k=1;
         DisplayBankLogo();
         SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 12 DIGITS");
         Sleep(1000);
-        SetCursor(X-20,Y+=1,"Press Enter");
-        NewCustomer();
-        return;
+        SetCursor(X-20,Y+=1,"Press Renter: ");
         }
+        else
+        {
+        k=0;
         SetCursor(X-10,Y+=1,"FIRST NAME: ");
         gets(fname);
         SetCursor(X-10,Y+=1,"LAST NAME: ");
@@ -439,26 +440,31 @@ int main()
         gets(address);//cin.getline(address,sizeof(address));
         SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
         gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
-        if(!(checkdata(phoneno,2)))
+        if(!(checkdata(phoneno,2))) // if phone number is incorrect
         {
+          k=1;
         DisplayBankLogo();
         SetCursor(X,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
         Sleep(1000);
         SetCursor(X,Y+=1,"Press Enter");
         NewCustomer();
-        return;
         }
+        else
+        {
+          k=0;
         SetCursor(X-10,Y+=1,"P I N [MAXIMUM 5 DIGITS] : ");
         cin>>pin;
-        if(!(checkdata(pin))) // FUNCITON OVERRIDING FOR PIN
+        if(!(checkdata(pin))) // FUNCITON OVERRIDING FOR PIN , if pin is incorrect
         {
+          k=1;
           DisplayBankLogo();
           SetCursor(X,Y+=2,"Wrong Input ,P I N [MAXIMUM 5 DIGITS] :");
           Sleep(1000);
           SetCursor(X,Y+=1,"Press Enter");
           NewCustomer();
-          return;
         }
+        else
+        {
         SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
         cin>>sum;
         accno=6000+(b.getaccounts());
@@ -471,6 +477,10 @@ int main()
             T.GetTransData(accno,sum,2);
             T.Savetrans(T);
         }
+       }
+       }
+       }
+       }
     }
     void customer:: displaydata()
     {
@@ -483,10 +493,17 @@ int main()
       SetCursor(X-20,Y+=1,"P I N :-");cout<<"*****"<<pin<<"*****";
     }
     int customer:: checkdata(int n)
-    {
-
+    {int d;
+     while(n!=0)
+     {
+       d++;n=n/10;
+     }
+     if(n>5)
+     return 0;
+     else return 1;
+     return 1;
     }
-    int customer:: checkdata(char *element, int flag)
+    int customer:: checkdata(char *element, int flag) // flag 1 for aadhar card and 2 for
     {
       switch (flag)
       {
@@ -570,14 +587,14 @@ int main()
       customer r,Customer;
      int acno;
      int k=0;            // Counter
-     cout<<"Enter you accountnumber";
+     SetCursor(X-20,Y+=2,"ENTER ACCOUNT NUMBER:-");
      cin>>acno;
      fstream file("customerfile.dat"); /* This is to for input purposes only :>*/
       while(!file.eof())         // For Finding Valid User with a valid account number :>
       {
        if(r.accno==acno)
        {                     // FOr Checking Customer
-         cout<<"ACCNO:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
+         SetCursor(X-20,Y+=2,"");cout<<"ACCOUNT NUMBER:"<<r.accno<<"\t"<<"NAME :"<<r.fname<<"\n";
          Customer=r;
          k=1;break;
         }
@@ -586,12 +603,14 @@ int main()
       if(k!=1)
      {
      cout<<"\nNo Match Found.Please Reenter the correct Account Number";
+     Sleep(2000);
      file.close();
      main();
      }
      else{
      HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-     int x;cout<<"\n"<<"P I N: \n";
+     int x;
+     SetCursor(X-20,Y+=2,"P I N : ");
      SetConsoleTextAttribute(hConsole,0);
      cin>>x;
      SetConsoleTextAttribute(hConsole,3);
@@ -599,12 +618,11 @@ int main()
      {
      file.close();
      cout<<"";
-     system ("CLS");
     DisplayBankLogo();
     if(Customer.status==1)
      t.choice(Customer);
      else{
-             Sleep(1000);
+      Sleep(1000);
      SetCursor(X-20,Y+=3,"Sorry You cannot Access Your Bank Account Details As Long As it is Blocked");
      Sleep(1000);
          }
