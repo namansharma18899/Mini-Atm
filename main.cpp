@@ -67,7 +67,7 @@ class customer : public Bank
     void displaydata();
     void NewCustomer();
     void OldCustomer();
-    int checkdata(char *,int); // 1 for AAdhar Card, 2 for Names,address , 3 for pin
+    int checkdata(char *,int); // 1 for AAdhar Card, 2 PIN , 3 for Address,Name
     int checkdata(int);
     int ReadData();
     customer()
@@ -598,7 +598,7 @@ int main()
             file.write((char *)&nc,sizeof(nc));
             SetCursor(X,Y+=2,"Data Saved Successfully check");
             nc.displaydata();
-            Sleep(3000);
+            Sleep(6000);
             DisplayBankLogo();
             SetCursor(X-20,Y+=2,"DONOT QUIT IN BETWEEN");
             file.close();
@@ -611,12 +611,11 @@ int main()
               file.write((char *)&nc,sizeof(nc));
                SetCursor(X,Y+=2,"Data Saved Successfully check");
                nc.displaydata();
-               Sleep(2000);
+               Sleep(6000);
                DisplayBankLogo();
                SetCursor(X-20,Y,"DONOT QUIT IN BETWEEN");
                file.close();
                t.choice(nc);
-             //  Transaction t;t.Credit();
             }
     }
     void customer:: OldCustomer()
