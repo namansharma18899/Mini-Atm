@@ -421,66 +421,73 @@ int main()
         gets(aadharcardno);
         if(!(checkdata(aadharcardno,1))) // if aadhar card no is incorrect
         {
-        k=1;
-        DisplayBankLogo();
-        SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 12 DIGITS");
-        Sleep(1000);
-        SetCursor(X-20,Y+=1,"Press Renter: ");
+            k=1;
+            DisplayBankLogo();
+            SetCursor(X-20,Y+=2,"Wrong Input , AAdhar No. = 12 DIGITS");
+            Sleep(1000);
+            SetCursor(X-20,Y+=1,"Press Renter: ");
         }
         else
         {
-        k=0;
-        SetCursor(X-10,Y+=1,"FIRST NAME: ");
-        gets(fname);
-        SetCursor(X-10,Y+=1,"LAST NAME: ");
-        gets(lname);
-        SetCursor(X-10,Y+=1,"FATHER'S NAME: ");
-        gets(fathername);//cin.getline(fathername,sizeof(fathername));
-        SetCursor(X-10,Y+=1,"ADDRESS: ");
-        gets(address);//cin.getline(address,sizeof(address));
-        SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
-        gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
-        if(!(checkdata(phoneno,2))) // if phone number is incorrect
-        {
-          k=1;
-        DisplayBankLogo();
-        SetCursor(X,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
-        Sleep(1000);
-        SetCursor(X,Y+=1,"Press Enter");
-        NewCustomer();
-        }
-        else
-        {
-          k=0;
-        SetCursor(X-10,Y+=1,"P I N [MAXIMUM 5 DIGITS] : ");
-        cin>>pin;
-        if(!(checkdata(pin))) // FUNCITON OVERRIDING FOR PIN , if pin is incorrect
-        {
-          k=1;
-          DisplayBankLogo();
-          SetCursor(X,Y+=2,"Wrong Input ,P I N [MAXIMUM 5 DIGITS] :");
-          Sleep(1000);
-          SetCursor(X,Y+=1,"Press Enter");
-          NewCustomer();
-        }
-        else
-        {
-        SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
-        cin>>sum;
-        accno=6000+(b.getaccounts());
-        updatebankaccounts();
-        if(sum<500)
-        getdata();
-        else
-        {
-            Transaction T;
-            T.GetTransData(accno,sum,2);
-            T.Savetrans(T);
-        }
-       }
-       }
-       }
-       }
+            k=0;
+            SetCursor(X-10,Y+=1,"FIRST NAME: ");
+            gets(fname);
+            SetCursor(X-10,Y+=1,"LAST NAME: ");
+            gets(lname);
+            SetCursor(X-10,Y+=1,"FATHER'S NAME: ");
+            gets(fathername);//cin.getline(fathername,sizeof(fathername));
+            SetCursor(X-10,Y+=1,"ADDRESS: ");
+            gets(address);//cin.getline(address,sizeof(address));
+            SetCursor(X-10,Y+=1,"PHONE NUMBER: ");
+            gets(phoneno); //cin.getline(phoneno,sizeof(phoneno));
+            if(!(checkdata(phoneno,2))) // if phone number is incorrect
+            {
+                k=1;
+                DisplayBankLogo();
+                SetCursor(X,Y+=2,"Wrong Input , Phone No. = 10 INTEGERS");
+                Sleep(1000);
+                SetCursor(X,Y+=1,"Press Enter");
+                NewCustomer();
+            }
+            else
+            {
+                k=0;
+                SetCursor(X-10,Y+=1,"P I N [MAXIMUM 5 DIGITS] : ");
+                cin>>pin;
+                if(!(checkdata(pin))) // FUNCITON OVERRIDING FOR PIN , if pin is incorrect
+                {
+                    k=1;
+                    DisplayBankLogo();
+                    SetCursor(X,Y+=2,"Wrong Input ,P I N [MAXIMUM 5 DIGITS] :");
+                    Sleep(1000);
+                    SetCursor(X,Y+=1,"Press Enter");
+                    NewCustomer();
+                }
+                else
+                {
+                    k=0;
+                    SetCursor(X-10,Y+=1,"Enter Sum To Credit MINIMUM 500 INR :- ");
+                    cin>>sum;
+                }
+            }
+         }
+     }              // Below we are only CReating the Account When we get a Deposit otherwise not
+                    while(sum<500)
+                    {
+                     DisplayBankLogo();
+                     SetCursor(X-20,Y+=4,"Wrong Input Minimum Sum To Deposit is 500 INR");
+                     SetCursor(X-25,Y+=4,"ENTER THE SUM TO CREDIT MINIMUM 500 INR :-");
+
+                     cin>>sum;
+                     if(sum>500)
+                    {
+                        accno=6000+(b.getaccounts());
+                        updatebankaccounts();
+                        Transaction T;
+                        T.GetTransData(accno,sum,2);
+                        T.Savetrans(T);
+                    }
+                    }
     }
     void customer:: displaydata()
     {
@@ -498,9 +505,10 @@ int main()
      {
        d++;n=n/10;
      }
-     if(n>5)
+     if(d>=5)
      return 0;
-     else return 1;
+     else
+     return 1;
      return 1;
     }
     int customer:: checkdata(char *element, int flag) // flag 1 for aadhar card and 2 for
